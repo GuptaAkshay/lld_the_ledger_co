@@ -85,4 +85,19 @@ class LoanServiceImplTest {
         BalanceResponse balanceResponse = new BalanceResponse("IDIDI", "Dale2", 1000, 55);
         assertNotEquals(balanceResponse, loanService.fetchBalance(loanId, 5));
     }
+
+    @Test
+    void fetchBalanceWhenPaymentMade() {
+        Loan loan = new Loan("MBI", "Dale", 10000D, 3D, 7D);
+        Payment payment = new Payment(2000, 0);
+        loan.getPayments().add(payment);
+        String loanId = "MBI_Dale";
+        loanService.provideLoan(loan);
+        BalanceResponse balanceResponse1 = new BalanceResponse("MBI", "Dale", 2000, 30);
+        assertEquals(balanceResponse1, loanService.fetchBalance(loanId, 0));
+        BalanceResponse balanceResponse2 = new BalanceResponse("MBI", "Dale", 3348, 26);
+        assertEquals(balanceResponse2, loanService.fetchBalance(loanId, 4));
+        BalanceResponse balanceResponse3 = new BalanceResponse("MBI", "Dale", 12100, 0);
+        assertEquals(balanceResponse3, loanService.fetchBalance(loanId, 30));
+    }
 }

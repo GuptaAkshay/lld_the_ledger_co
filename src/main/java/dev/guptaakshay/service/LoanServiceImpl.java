@@ -46,7 +46,9 @@ public class LoanServiceImpl implements LoanService {
         remainingAmt += previousPayments;
 
         Double remainingEmi = Math.ceil((loan.getAmount() - remainingAmt) / emiDetails.getEmiPerMonth());
-
+        if(remainingAmt > loan.getAmount()){
+            remainingAmt = loan.getAmount().intValue();
+        }
         BalanceResponse balanceResponse = new BalanceResponse(loan.getBankName(), loan.getBorrowerName(), remainingAmt,
                 remainingEmi.intValue());
 
